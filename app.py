@@ -16,6 +16,10 @@ LINK_EXPIRY = 15 * 60  # 15 minutes in seconds
 # Store mapping: { random_id: {"path":..., "time":...} }
 file_links = {}
 
+@app.route('/')
+def home():
+    return render_template('index.html')
+
 def generate_random_string(length=8):
     """Generate random ID for each file link"""
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
@@ -87,4 +91,4 @@ def cleanup_expired_files():
 threading.Thread(target=cleanup_expired_files, daemon=True).start()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run
