@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FileShare</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+    header h1 {
+      font-size: 3rem;
+      margin: 0;
+      font-weight: bold;
+    }
+    header p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      opacity: 0.9;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .upload-box {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+    .upload-box h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+    input[type="file"] {
+      display: block;
+      margin: 20px auto;
+      font-size: 1rem;
+      color: #000;
+      background: #fff;
+      padding: 5px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button {
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #fff;
+      color: #4facfe;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #f0f0f0;
+    }
+    .result-box {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+    }
+    .result-box a {
+      color: #fff;
+      font-weight: bold;
+      word-wrap: break-word;
+    }
+    .error-msg {
+      margin-top: 15px;
+      font-weight: bold;
+      color: yellow;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FileShare</h1>
+    <p>Upload and share files instantly. Links expire in 15 minutes.</p>
+  </header>
+  <main>
+    <div class="upload-box">
+      <h2>Upload Your File</h2>
+      <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload & Get Link</button>
+      </form>
+      <p style="margin-top: 15px; font-size: 0.95rem;">Max file size: 25 MB</p>
+
+      {% if error %}
+        <p class="error-msg">{{ error }}</p>
+      {% endif %}
+
+      {% if link %}
+        <div class="result-box">
+          <p><strong>Upload successful!</strong></p>
+          <p>This link will expire in 15 minutes:</p>
+          <p><a href="{{ link }}">{{ link }}</a></p>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+  <footer>
+    <p>© 2025 FileShare</p>
+  </footer>
+</body>
+</html>
