@@ -131,7 +131,7 @@ This ensures the app stays lightweight and clean.
 
 ##  License
 
-MIT License © 2025 Drip-File
+MIT License © 2025 DripFile
 
 
 
