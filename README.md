@@ -49,6 +49,10 @@ DripFile/
 - **Server:** PythonAnywhere (WSGI)
 
 ---
+## Screenshots
+<img width="1704" height="956" alt="Screenshot 2025-11-10 at 01 07 37" src="https://github.com/user-attachments/assets/b21a604b-a5df-495e-b5cd-032948b71041" />
+
+---
 
 ## Local Setup
 
