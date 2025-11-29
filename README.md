@@ -6,7 +6,7 @@
 **DripFile** is a lightweight Flask web app for quick, temporary file sharing.  
 Users can upload a file and instantly get a sharable download link that automatically expires after 15 minutes.  
 
->  Built with Flask · Deployed on PythonAnywhere
+>  Built with Flask · Deployed on Vercel
 
 ---
 
@@ -46,7 +46,7 @@ DripFile/
 
 - **Backend:** Flask (Python)
 - **Frontend:** HTML, CSS (Vanilla)
-- **Server:** PythonAnywhere (WSGI)
+- **Server:** Vercel (WSGI)
 
 ---
 ## Screenshots
@@ -86,31 +86,6 @@ Then open:  `http://127.0.0.1:5000/`
 
 ---
 
-## ☁️ Deployment (PythonAnywhere)
-
-1. Upload project files (`app.py`, `templates/`, `requirements.txt`, `uploads/`)
-2. Create a **virtual environment** in Bash console:
-
-   ```bash
-   cd ~/DripFile
-   python -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   ```
-3. Go to **Web tab → Add a new web app → Manual configuration → Python 3.x**
-4. Edit the **WSGI file** to point to your app:
-
-   ```python
-   import sys
-   path = '/home/yourusername/DripFile'
-   if path not in sys.path:
-       sys.path.append(path)
-
-   from app import app as application
-   ```
-5. Reload your web app — done 
-
----
 
 
 ##  How It Works
