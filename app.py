@@ -90,5 +90,4 @@ def cleanup_expired_files():
 # Start background thread for cleaning expired files
 threading.Thread(target=cleanup_expired_files, daemon=True).start()
 
-if __name__ == "__main__":
-    app.run
+
