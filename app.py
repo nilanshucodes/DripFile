@@ -1,93 +1,87 @@
 import os
+import time
+import base64
+import json
 import random
 import string
-import time
-import threading
 from flask import Flask, request, send_file, render_template
 
 app = Flask(__name__)
 
-# --- Config ---
-UPLOAD_FOLDER = "uploads"
+# Vercel-safe temp folder
+UPLOAD_FOLDER = "/tmp/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-app.config['MAX_CONTENT_LENGTH'] = 25 * 1024 * 1024  # 25 MB
-LINK_EXPIRY = 15 * 60  # 15 minutes in seconds
 
-# Store mapping: { random_id: {"path":..., "time":...} }
-file_links = {}
+MAX_SIZE = 25 * 1024 * 1024  # 25 MB
+EXPIRY_SECONDS = 15 * 60     # 15 minutes
 
-@app.route('/')
-def home():
-    return render_template('index.html')
 
-def generate_random_string(length=8):
-    """Generate random ID for each file link"""
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+def random_id(n=6):
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=n))
+
+
+def encode(data: dict):
+    return base64.urlsafe_b64encode(json.dumps(data).encode()).decode()
+
+
+def decode(token: str):
+    try:
+        return json.loads(base64.urlsafe_b64decode(token.encode()).decode())
+    except:
+        return None
+
 
 @app.errorhandler(413)
 def file_too_large(e):
-    return "File is too large. Max limit is 25 MB.", 413
+    return "File is too large. Maximum allowed size is 25 MB.", 413
+
 
 @app.route("/", methods=["GET", "POST"])
 def upload():
     if request.method == "POST":
-        if 'file' not in request.files:
-            return render_template("index.html", link=None, error="No file selected")
 
-        file = request.files['file']
+        if "file" not in request.files:
+            return render_template("index.html", error="No file selected", link=None)
+
+        file = request.files["file"]
+
         if file.filename == "":
-            return render_template("index.html", link=None, error="No file selected")
+            return render_template("index.html", error="No file selected", link=None)
 
-        # Save uploaded file
         filename = file.filename
-        filepath = os.path.join(UPLOAD_FOLDER, filename)
-        file.save(filepath)
+        file_id = random_id()
 
-        # Generate random link ID
-        random_id = generate_random_string()
-        file_links[random_id] = {
-            "path": filepath,
+        # Temporary path in /tmp
+        saved_name = f"{file_id}_{filename}"
+        path = os.path.join(UPLOAD_FOLDER, saved_name)
+        file.save(path)
+
+        # Encode metadata inside the link
+        token = encode({
+            "name": filename,
+            "stored": saved_name,
             "time": time.time()
-        }
+        })
 
-        share_link = request.host_url + random_id
-        # Render the same page but with the link
+        share_link = request.host_url + "d/" + token
+
         return render_template("index.html", link=share_link, error=None)
 
-    # GET request: just show the page without a link
     return render_template("index.html", link=None, error=None)
 
-@app.route("/<random_id>")
-def download(random_id):
-    """Serve the file if link is still valid"""
-    file_info = file_links.get(random_id)
-    if not file_info:
-        return "Invalid or expired link", 404
 
-    return send_file(file_info["path"], as_attachment=True)
+@app.route("/d/<token>")
+def download(token):
+    info = decode(token)
+    if not info:
+        return "Invalid or expired link.", 400
 
-# --- Background cleaner thread ---
-def cleanup_expired_files():
-    """Periodically remove files older than LINK_EXPIRY"""
-    while True:
-        now = time.time()
-        expired_keys = []
-        for key, info in list(file_links.items()):
-            if now - info["time"] > LINK_EXPIRY:
-                # Delete the file
-                try:
-                    os.remove(info["path"])
-                except FileNotFoundError:
-                    pass
-                expired_keys.append(key)
+    # Check expiry
+    if time.time() - info["time"] > EXPIRY_SECONDS:
+        return "This link has expired.", 410
 
-        # Remove expired entries
-        for key in expired_keys:
-            del file_links[key]
+    stored_path = os.path.join(UPLOAD_FOLDER, info["stored"])
+    if not os.path.exists(stored_path):
+        return "File removed or unavailable.", 410
 
-        time.sleep(60)  # Check every 60 seconds
-
-# Start background thread for cleaning expired files
-threading.Thread(target=cleanup_expired_files, daemon=True).start()
-
-
+    return send_file(stored_path, as_attachment=True, download_name=info["name"])
