@@ -12,7 +12,7 @@ Users can upload a file and instantly get a sharable download link that automati
 
 ##  Demo
 
-**Live App:** [https://nilanshucodes.pythonanywhere.com](https://nilanshucodes.pythonanywhere.com)  
+**Live App:** [https://dripfile.vercel.app/](https://dripfile.vercel.app/)  
 
 
 ---
