@@ -9,17 +9,159 @@
   </script>
   <script defer src="/_vercel/insights/script.js"></script>
   <style>
+    body,
+    .upload-box,
+    button,
+    .main-btn,
+    .theme-btn,
+    a {
+      transition: background 0.5s ease, background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+    }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', Arial, sans-serif;
-      background-color: #1e90ff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
+
+    body.theme-ocean {
+      background: linear-gradient(135deg, #1e90ff, #00bfff);
+      color: #fff;
+    }
+    body.theme-ocean .upload-box {
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+    }
+    body.theme-ocean button.main-btn {
+      background-color: #fff;
+      color: #1e90ff;
+    }
+    body.theme-ocean button.main-btn:hover {
+      background-color: #e0e0e0;
+    }
+    body.theme-ocean .result-box a { color: #fff; }
+    body.theme-ocean .error-msg { color: yellow; }
+    body.theme-ocean .theme-btn {
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+    }
+
+    body.theme-sunset {
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      color: #3a1c00;
+    }
+    body.theme-sunset .upload-box {
+      background: rgba(255,255,255,0.25);
+      box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+    }
+    body.theme-sunset button.main-btn {
+      background-color: #fff;
+      color: #f7971e;
+    }
+    body.theme-sunset button.main-btn:hover {
+      background-color: #f0e6d0;
+    }
+    body.theme-sunset .result-box a { color: #3a1c00; }
+    body.theme-sunset .error-msg { color: #8b0000; }
+    body.theme-sunset .theme-btn {
+      background: rgba(255,255,255,0.35);
+      color: #3a1c00;
+    }
+
+    body.theme-forest {
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+      color: #fff;
+    }
+    body.theme-forest .upload-box {
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+    }
+    body.theme-forest button.main-btn {
+      background-color: #fff;
+      color: #11998e;
+    }
+    body.theme-forest button.main-btn:hover {
+      background-color: #d0f5e0;
+    }
+    body.theme-forest .result-box a { color: #fff; }
+    body.theme-forest .error-msg { color: #ffe066; }
+    body.theme-forest .theme-btn {
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+    }
+
+    body.theme-midnight {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #e0e0ff;
+    }
+    body.theme-midnight .upload-box {
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 6px 30px rgba(0,0,0,0.5);
+    }
+    body.theme-midnight button.main-btn {
+      background-color: #6c63ff;
+      color: #fff;
+    }
+    body.theme-midnight button.main-btn:hover {
+      background-color: #5a52d5;
+    }
+    body.theme-midnight .result-box a { color: #b8b5ff; }
+    body.theme-midnight .error-msg { color: #ff6b6b; }
+    body.theme-midnight .theme-btn {
+      background: rgba(108,99,255,0.3);
+      color: #e0e0ff;
+    }
+
+    body.theme-rose {
+      background: linear-gradient(135deg, #ee9ca7, #ffdde1);
+      color: #4a1942;
+    }
+    body.theme-rose .upload-box {
+      background: rgba(255,255,255,0.3);
+      box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+    }
+    body.theme-rose button.main-btn {
+      background-color: #fff;
+      color: #d63384;
+    }
+    body.theme-rose button.main-btn:hover {
+      background-color: #fce4ec;
+    }
+    body.theme-rose .result-box a { color: #4a1942; }
+    body.theme-rose .error-msg { color: #b71c1c; }
+    body.theme-rose .theme-btn {
+      background: rgba(255,255,255,0.4);
+      color: #4a1942;
+    }
+
+    body.theme-charcoal {
+      background: linear-gradient(135deg, #2c2c2c, #1a1a2e);
+      color: #e0e0e0;
+    }
+    body.theme-charcoal .upload-box {
+      background: rgba(255,255,255,0.07);
+      box-shadow: 0 6px 30px rgba(0,0,0,0.5);
+    }
+    body.theme-charcoal button.main-btn {
+      background-color: #00d2ff;
+      color: #1a1a2e;
+    }
+    body.theme-charcoal button.main-btn:hover {
+      background-color: #00b8e6;
+    }
+    body.theme-charcoal .result-box a { color: #00d2ff; }
+    body.theme-charcoal .error-msg { color: #ff5252; }
+    body.theme-charcoal .theme-btn {
+      background: rgba(0,210,255,0.2);
+      color: #e0e0e0;
+    }
+
     header {
       text-align: center;
       padding: 60px 20px 20px;
+      position: relative;
     }
     header h1 {
       font-size: 3rem;
@@ -39,12 +181,10 @@
       padding: 20px;
     }
     .upload-box {
-      background: rgba(255,255,255,0.15);
       backdrop-filter: blur(12px);
       padding: 40px;
       border-radius: 20px;
       text-align: center;
-      box-shadow: 0 6px 25px rgba(0,0,0,0.2);
       width: 100%;
       max-width: 400px;
     }
@@ -62,19 +202,14 @@
       border-radius: 6px;
       cursor: pointer;
     }
-    button {
+    button.main-btn {
       padding: 12px 25px;
       font-size: 1.1rem;
       border: none;
       border-radius: 10px;
-      background-color: #fff;
-      color: #4facfe;
       cursor: pointer;
       font-weight: bold;
       transition: background 0.3s;
-    }
-    button:hover {
-      background-color: #f0f0f0;
     }
     .result-box {
       margin-top: 20px;
@@ -83,14 +218,12 @@
       border-radius: 12px;
     }
     .result-box a {
-      color: #fff;
       font-weight: bold;
       word-wrap: break-word;
     }
     .error-msg {
       margin-top: 15px;
       font-weight: bold;
-      color: yellow;
     }
     footer {
       text-align: center;
@@ -98,19 +231,53 @@
       font-size: 0.9rem;
       opacity: 0.8;
     }
+
+    .theme-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      border: none;
+      border-radius: 50px;
+      padding: 10px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, background 0.3s;
+    }
+    .theme-btn:hover {
+      transform: scale(1.08);
+    }
+    .theme-btn .icon {
+      font-size: 1.2rem;
+      transition: transform 0.4s;
+    }
+    .theme-btn:active .icon {
+      transform: rotate(180deg);
+    }
   </style>
 </head>
-<body>
+<body class="theme-ocean">
+  <button class="theme-btn" type="button" onclick="cycleTheme()" title="Switch theme" aria-label="Cycle color theme">
+    <span class="icon">🎨</span>
+    <span id="theme-label" aria-live="polite">Ocean</span>
+  </button>
+
   <header>
     <h1>DripFile</h1>
     <p>Upload and share files instantly. Links expire in 15 minutes.</p>
   </header>
+
   <main>
     <div class="upload-box">
       <h2>Upload Your File</h2>
       <form method="post" enctype="multipart/form-data">
         <input type="file" name="file" required>
-        <button type="submit">Upload & Get Link</button>
+        <button type="submit" class="main-btn">Upload & Get Link</button>
       </form>
       <p style="margin-top: 15px; font-size: 0.95rem;">Max file size: 25 MB</p>
 
@@ -127,8 +294,41 @@
       {% endif %}
     </div>
   </main>
+
   <footer>
     <p>© 2025 DripFile</p>
   </footer>
+
+  <script>
+    const themes = [
+      { class: 'theme-ocean',    label: 'Ocean' },
+      { class: 'theme-sunset',   label: 'Sunset' },
+      { class: 'theme-forest',   label: 'Forest' },
+      { class: 'theme-midnight', label: 'Midnight' },
+      { class: 'theme-rose',     label: 'Rosé' },
+      { class: 'theme-charcoal', label: 'Charcoal' }
+    ];
+
+    const storedThemeIndex = localStorage.getItem('dripfile-theme');
+    let currentIndex = parseInt(storedThemeIndex, 10);
+    if (!Number.isInteger(currentIndex) || currentIndex < 0 || currentIndex >= themes.length) {
+      currentIndex = 0;
+    }
+
+    function applyTheme(index) {
+      if (!Number.isInteger(index) || index < 0 || index >= themes.length) {
+        index = 0;
+      }
+      document.body.className = themes[index].class;
+      document.getElementById('theme-label').textContent = themes[index].label;
+      localStorage.setItem('dripfile-theme', index);
+    }
+
+    function cycleTheme() {
+      currentIndex = (currentIndex + 1) % themes.length;
+      applyTheme(currentIndex);
+    }
+    applyTheme(currentIndex);
+  </script>
 </body>
 </html>
