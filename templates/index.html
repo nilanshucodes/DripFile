@@ -309,9 +309,16 @@
       { class: 'theme-charcoal', label: 'Charcoal' }
     ];
 
-    let currentIndex = parseInt(localStorage.getItem('dripfile-theme') || '0');
+    const storedThemeIndex = localStorage.getItem('dripfile-theme');
+    let currentIndex = parseInt(storedThemeIndex, 10);
+    if (!Number.isInteger(currentIndex) || currentIndex < 0 || currentIndex >= themes.length) {
+      currentIndex = 0;
+    }
 
     function applyTheme(index) {
+      if (!Number.isInteger(index) || index < 0 || index >= themes.length) {
+        index = 0;
+      }
       document.body.className = themes[index].class;
       document.getElementById('theme-label').textContent = themes[index].label;
       localStorage.setItem('dripfile-theme', index);
