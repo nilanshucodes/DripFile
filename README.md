@@ -58,7 +58,7 @@ DripFile/
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/yourusername/DripFile.git
+git clone https://github.com/nilanshucodes/DripFile.git
 cd DripFile
 ````
 
